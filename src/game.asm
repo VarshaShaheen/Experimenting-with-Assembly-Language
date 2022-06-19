@@ -4,7 +4,7 @@ section .data
 
     next_line db 10
 
-section .tex
+section .text
   global _start
 
     push_x:
@@ -65,6 +65,12 @@ section .tex
         mov rdx,1
         syscall
 
+        mov rax,0
+        mov rdi,0
+        mov rsi,delim
+        mov rdx,1
+        syscall
+
         mov r8,[input]
         sub r8,'1'
         mov rax,r8
@@ -102,18 +108,20 @@ section .tex
 
 
     _start:
+       mov r14,0
+       call draw_grid
 
         play_game:
-
             call print_command1
-            call draw_grid
             call read_input
             call print_grid
-;          play_next:
-;            add r12,1
-;            cmp r12,8
-;            jle play_game
 
+            add r14,1
+            cmp r14,8
+
+            jle play_game
+
+    call exit
 
 
     exit:
@@ -125,6 +133,5 @@ section .tex
     section .bss
         array resq 9
         input resq 1
-        seperators resq 3
-
+        delim resq 1
 
