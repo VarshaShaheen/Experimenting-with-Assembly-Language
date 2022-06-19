@@ -7,7 +7,7 @@ section .data
 section .text
   global _start
 
-    push_x:
+       push_x:
         pop r15
 
         push rax
@@ -15,6 +15,7 @@ section .text
         push rcx
         push rdi
         push rsi
+        push r14
 
         push r15
         ret
@@ -22,6 +23,7 @@ section .text
     pop_x:
         pop r15
 
+        pop r14
         pop rsi
         pop rdi
         pop rcx
@@ -38,6 +40,12 @@ section .text
         mov rdx,command1_len
         syscall
         ret
+
+    add_O:
+        mov r8,'X'
+        mov [array+rax],r8
+        jmp print
+
 
      print_enter:
         call push_x
@@ -76,7 +84,17 @@ section .text
         mov rax,r8
         mov r8,8
         mul r8
-        mov r8,'X'
+
+        push rax
+        mov rax,r14
+        mov r15,2
+        div r15
+        pop rax
+        cmp rdx,0
+        je add_O
+
+
+        mov r8,'O'
         mov [array+rax],r8
         ret
 
@@ -114,6 +132,8 @@ section .text
         play_game:
             call print_command1
             call read_input
+
+            print:
             call print_grid
 
             add r14,1
