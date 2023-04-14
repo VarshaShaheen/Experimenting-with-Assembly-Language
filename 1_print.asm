@@ -12,7 +12,7 @@ section .text
     syscall
     call exit
 
-exit:
+  exit:
     mov rax, 60 ; specify which system call to invoke, 60-exit system call
     mov rdi, 0  ; specify the exit code, 0-success
     syscall
